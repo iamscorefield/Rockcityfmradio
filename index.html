@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,6 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
+    <link rel="preload" href="background.gif" as="image">
     <title>Rock City FM</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -53,7 +15,7 @@
 <body>
     <!-- Background GIF -->
     <div class="background-gif">
-        <img id="radio-gif" src="background.gif" alt="Radio Tunes GIF">
+        <img id="radio-gif" src="background.gif" alt="Radio Tunes GIF" onerror="this.src='background-fallback.png'">
         <button id="play-pause-btn" class="play-pause-btn">
             <i class="fas fa-play"></i>
         </button>
@@ -77,7 +39,7 @@
     </div>
 
     <!-- Audio Player (hidden) -->
-    <audio id="audio-player" src="https://stream.zeno.fm/7cm2qm5u9qzuv" style="display: none;"></audio>
+    <audio id="audio-player" src="https://stream.zeno.fm/7cm2qm5u9qzuv" style="display: none;" crossorigin="anonymous"></audio>
 
     <!-- Error Message (hidden by default) -->
     <div id="error-message" class="error-message" style="display: none;">
@@ -94,7 +56,7 @@
         const offlineMessage = document.getElementById('offline-message');
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
+                navigator.serviceWorker.register('/Rockcityfmradio/service-worker.js', { scope: '/Rockcityfmradio/' })
                     .then(registration => {
                         console.log('Service Worker registered with scope:', registration.scope);
                     })
