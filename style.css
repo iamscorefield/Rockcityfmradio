@@ -14,13 +14,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #000; /* Fallback background color while GIF loads */
+    background-color: #000; /* Fallback background color */
 }
 
 #radio-gif {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Preserve aspect ratio, fit within viewport */
     cursor: pointer; /* Make the entire GIF clickable */
 }
 
@@ -127,4 +127,13 @@ body {
     padding: 10px;
     border-radius: 5px;
     z-index: 2;
+}
+
+/* Ensure responsiveness for landscape mode */
+@media (orientation: landscape) {
+    #radio-gif {
+        width: auto;
+        height: 100%;
+        max-width: 100%;
+    }
 }
