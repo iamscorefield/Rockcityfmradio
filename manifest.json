@@ -8,6 +8,8 @@
   "description": "Rock City FM Radio Web Application",
   "scope": "/Rockcityfmradio/",
   "orientation": "portrait",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     { "src": "icon-96x96.png", "type": "image/png", "sizes": "96x96" },
     { "src": "icon-144x144.png", "type": "image/png", "sizes": "144x144" },
@@ -31,5 +33,6 @@
       "label": "Rock City FM side menu"
     }
   ],
-  "categories": ["music", "entertainment"]
+  "categories": ["music", "entertainment"],
+  "prefer_related_applications": false
 }
