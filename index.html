@@ -1,0 +1,112 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <title>Rock City FM</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background GIF -->
+    <div class="background-gif">
+        <img id="radio-gif" src="background.gif" alt="Radio Tunes GIF">
+        <button id="play-pause-btn" class="play-pause-btn">
+            <i class="fas fa-play"></i>
+        </button>
+    </div>
+
+    <!-- Menu Icon -->
+    <div class="menu-icon" onclick="toggleMenu()">
+        <img src="icon.png" alt="Radio Icon" class="radio-icon"> <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Side Menu -->
+    <div class="side-menu" id="sideMenu">
+        <a href="https://rockcityfmradio.com/" target="_blank"><i class="fas fa-globe"></i> Website</a>
+        <a href="https://web.facebook.com/RockCityFMRadio/?ref=embed_page" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+        <a href="https://x.com/rockcityfm" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://www.instagram.com/rockcityfmradio101.9" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://rockcityfmradio.com/contact-us-2/" target="_blank"><i class="fas fa-phone"></i> Contact</a>
+        <a href="https://linktr.ee/rockcityfmradio" target="_blank"><i class="fas fa-tree"></i> LinkTree</a>
+        <a href="https://rockcitybooking.com/" target="_blank"><i class="fas fa-podcast"></i> Book Airtime</a>
+        <a href="https://rockcityfmradio.com/privacy-policy/" target="_blank"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+    </div>
+
+    <!-- Audio Player (hidden) -->
+    <audio id="audio-player" src="https://stream.zeno.fm/7cm2qm5u9qzuv" style="display: none;"></audio>
+
+    <!-- Error Message (hidden by default) -->
+    <div id="error-message" class="error-message" style="display: none;">
+        Unable to load the stream. Please check your internet connection.
+    </div>
+
+    <!-- Offline Message (hidden by default) -->
+    <div id="offline-message" class="error-message" style="display: none;">
+        Offline mode is unavailable. Please ensure you’re connected to the internet.
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const offlineMessage = document.getElementById('offline-message');
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error.message);
+                        offlineMessage.style.display = 'block';
+                    });
+            });
+        } else {
+            offlineMessage.style.display = 'block';
+        }
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9368190f389d44cf',t:'MTc0NTY5MTY2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
