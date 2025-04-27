@@ -14,12 +14,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #000; /* Fallback background color while GIF loads */
 }
 
 #radio-gif {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    cursor: pointer; /* Make the entire GIF clickable */
 }
 
 .play-pause-btn {
