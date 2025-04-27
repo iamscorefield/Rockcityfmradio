@@ -53,7 +53,7 @@ body {
 
 .menu-icon {
     position: absolute;
-    top: 60px; /* Moved down to avoid overlapping the side menu */
+    top: 60px; /* Default for desktop */
     left: 20px;
     font-size: 24px;
     color: white;
@@ -89,7 +89,7 @@ body {
     background-color: rgba(9, 62, 141, 0.9); /* Blue #093E8D with slight transparency */
     color: white;
     padding: 20px;
-    padding-top: 20px; /* Reduced since menu icon is moved down */
+    padding-top: 20px; /* Default for desktop */
     padding-bottom: 60px; /* Space at the bottom */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -138,5 +138,15 @@ body {
         width: auto;
         height: 100%;
         max-width: 100%;
+    }
+}
+
+/* Adjust for mobile screens */
+@media (max-width: 600px) {
+    .menu-icon {
+        top: 40px; /* Move icon down on mobile to avoid overlap */
+    }
+    .side-menu {
+        padding-top: 80px; /* Increase padding to clear the menu icon on mobile */
     }
 }
