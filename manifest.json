@@ -34,5 +34,6 @@
     }
   ],
   "categories": ["music", "entertainment"],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "iarc_rating_id": ""
 }
