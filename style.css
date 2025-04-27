@@ -14,7 +14,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #000; /* Fallback background color */
+    background-color: #093E8D; /* Changed to blue to match branding */
 }
 
 #radio-gif {
@@ -86,12 +86,14 @@ body {
     left: 0;
     height: 100%;
     width: min(250px, 80%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(9, 62, 141, 0.9); /* Changed to blue #093E8D with slight transparency */
     color: white;
     padding: 20px;
+    padding-bottom: 60px; /* Added space at the bottom to avoid overlap with icon/logo */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 1;
+    box-sizing: border-box; /* Ensure padding doesn't increase width */
 }
 
 .side-menu a {
