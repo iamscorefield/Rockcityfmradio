@@ -14,7 +14,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #093E8D; /* Changed to blue to match branding */
+    background-color: #093E8D; /* Blue background */
 }
 
 #radio-gif {
@@ -29,7 +29,7 @@ body {
     bottom: 20%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(9, 62, 141, 0.5); /* Changed to blue #093E8D with transparency */
     color: white;
     border: none;
     border-radius: 50%;
@@ -44,7 +44,7 @@ body {
 }
 
 .play-pause-btn:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(9, 62, 141, 0.7); /* Darker blue on hover */
 }
 
 .play-pause-btn:focus {
@@ -86,10 +86,11 @@ body {
     left: 0;
     height: 100%;
     width: min(250px, 80%);
-    background-color: rgba(9, 62, 141, 0.9); /* Changed to blue #093E8D with slight transparency */
+    background-color: rgba(9, 62, 141, 0.9); /* Blue #093E8D with slight transparency */
     color: white;
     padding: 20px;
-    padding-bottom: 60px; /* Added space at the bottom to avoid overlap with icon/logo */
+    padding-top: 70px; /* Increased top padding to push list below the menu icon */
+    padding-bottom: 60px; /* Space at the bottom */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 1;
