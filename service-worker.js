@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rock-city-fm-cache-v2';
+const CACHE_NAME = 'rock-city-fm-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -21,6 +21,9 @@ self.addEventListener('install', event => {
       .then(cache => {
         return cache.addAll(urlsToCache);
       })
+      .catch(error => {
+        console.error('Cache addAll failed:', error);
+      })
   );
 });
 
@@ -32,7 +35,7 @@ self.addEventListener('fetch', event => {
           return response;
         }
         return fetch(event.request).catch(() => {
-          return caches.match('/index.html'); // Fallback to index.html for offline
+          return caches.match('/index.html');
         });
       })
   );
