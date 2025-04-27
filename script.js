@@ -18,21 +18,31 @@ function toggleMenu() {
     sideMenu.classList.toggle('open');
 }
 
-playPauseBtn.addEventListener('click', () => {
+function togglePlayPause() {
     if (audioPlayer.paused) {
         audioPlayer.play().then(() => {
             updatePlayPauseButton(true);
             errorMessage.style.display = 'none';
-        }).catch(() => {
+        }).catch(error => {
+            errorMessage.textContent = 'Failed to play stream: ' + error.message;
             errorMessage.style.display = 'block';
+            updatePlayPauseButton(false);
         });
     } else {
         audioPlayer.pause();
         updatePlayPauseButton(false);
+        errorMessage.style.display = 'none';
     }
-});
+}
 
-audioPlayer.addEventListener('error', () => {
+// Make the entire GIF clickable for play/pause
+radioGif.addEventListener('click', togglePlayPause);
+
+// Also keep the play/pause button functional for accessibility
+playPauseBtn.addEventListener('click', togglePlayPause);
+
+audioPlayer.addEventListener('error', (e) => {
+    errorMessage.textContent = 'Stream error: Unable to load the audio stream. Please try again later.';
     errorMessage.style.display = 'block';
     updatePlayPauseButton(false);
 });
