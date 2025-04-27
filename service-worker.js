@@ -1,11 +1,18 @@
-const CACHE_NAME = 'rock-city-fm-cache-v1';
+const CACHE_NAME = 'rock-city-fm-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/script.js',
   '/background.gif',
-  '/icon.png'
+  '/icon.png',
+  '/icon-96x96.png',
+  '/icon-144x144.png',
+  '/icon-180x180.png',
+  '/icon-512x512.png',
+  '/icon-1024x1024.png',
+  '/screenshot1.png',
+  '/screenshot2.png'
 ];
 
 self.addEventListener('install', event => {
@@ -24,7 +31,9 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response;
         }
-        return fetch(event.request);
+        return fetch(event.request).catch(() => {
+          return caches.match('/index.html'); // Fallback to index.html for offline
+        });
       })
   );
 });
