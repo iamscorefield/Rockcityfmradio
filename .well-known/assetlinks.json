@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.rockcityfmradio",
+    "sha256_cert_fingerprints": ["10DB0E4339EBFCFFB8850D43872E89A526E73DB93F59B0B86170C8E76D024191"]
+  }
+}]
