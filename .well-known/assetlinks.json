@@ -3,6 +3,6 @@
   "target": {
     "namespace": "android_app",
     "package_name": "com.rockcityfmradio",
-    "sha256_cert_fingerprints": ["10DB0E4339EBFCFFB8850D43872E89A526E73DB93F59B0B86170C8E76D024191"]
+    "sha256_cert_fingerprints": ["10:DB:0E:43:39:EB:FC:FF:B8:85:0D:43:87:2E:89:A5:26:E7:3D:B9:3F:59:B0:B8:61:70:C8:E7:6D:02:41:91"]
   }
 }]
